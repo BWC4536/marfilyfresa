@@ -48,6 +48,7 @@ export default function ProductForm() {
     }
   }
 
+  
   return (
     <form onSubmit={handleSubmit} className="bg-white/60 p-6 rounded-2xl border border-white/50 space-y-4">
       <input name="name" placeholder="Nombre del producto" className="w-full p-2 rounded-lg border" required />
