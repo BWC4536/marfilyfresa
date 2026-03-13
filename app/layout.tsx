@@ -5,6 +5,8 @@ import { createClient } from "@/utils/supabase/server";
 import Link from "next/link";
 import ChatWindow from "@/components/Chatbot/ChatWindow";
 import { redirect } from "next/navigation";
+import { FaWhatsapp, FaInstagram } from 'react-icons/fa'; // Instala: npm install react-icons
+
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-playfair' });
 const lato = Lato({ weight: ["300", "400", "700"], subsets: ["latin"], variable: '--font-lato' });
@@ -65,6 +67,12 @@ export default async function RootLayout({
                 </Link>
               )}
             </nav>
+            <a href="https://wa.me/34605153154" target="_blank" className="bg-[#25D366] p-4 rounded-full text-white shadow-lg hover:scale-110 transition-transform">
+              <FaWhatsapp size={24} />
+            </a>
+            <a href="https://www.instagram.com/marfilyfresa/" target="_blank" className="bg-[#E1306C] p-4 rounded-full text-white shadow-lg hover:scale-110 transition-transform">
+              <FaInstagram size={24} />
+            </a>
           </div>
         </header>
 

@@ -48,15 +48,15 @@ export default function ProductForm() {
     }
   }
 
-  
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white/60 p-6 rounded-2xl border border-white/50 space-y-4">
-      <input name="name" placeholder="Nombre del producto" className="w-full p-2 rounded-lg border" required />
-      <input name="price" type="number" step="0.01" placeholder="Precio" className="w-full p-2 rounded-lg border" required />
-      <input name="image" type="file" accept="image/*" className="w-full" required />
-      <button disabled={loading} className="bg-mf-charcoal text-white px-6 py-2 rounded-full">
-        {loading ? "Subiendo..." : "Publicar Producto"}
-      </button>
-    </form>
+    <form className="bg-[#FADADD]/30 p-8 rounded-3xl border border-[#E6E6FA] space-y-4">
+  {/* Inputs con borde más suave */}
+  <input name="name" className="w-full p-3 rounded-xl border border-[#E6E6FA] bg-white/50" />
+  {/* Botón */}
+  <button className="bg-[#333333] text-[#FFFFF0] px-8 py-3 rounded-full hover:bg-[#FADADD] hover:text-black transition-all">
+    Publicar
+  </button>
+</form>
   );
 }

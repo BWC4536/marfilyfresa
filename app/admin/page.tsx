@@ -28,33 +28,37 @@ export default async function AdminPage() {
   // 2. Consulta de productos para la tabla
   const { data: products } = await supabase.from('products').select('*');
 
-  // 3. Consulta de lista de deseos
-  const { data: wishlistStats } = await supabase
+  // 3. Consulta de lista de deseos mejorada (con JOIN)
+  const { data: wishlistData } = await supabase
     .from('wishlist')
-    .select('product_name');
+    .select('product_name, products(price, image_url)');
 
-  const stats = wishlistStats?.reduce((acc: any, item: any) => {
-    acc[item.product_name] = (acc[item.product_name] || 0) + 1;
+  const stats = wishlistData?.reduce((acc: any, item: any) => {
+    acc[item.product_name] = {
+      count: (acc[item.product_name]?.count || 0) + 1,
+      price: item.products?.price || 0,
+      image: item.products?.image_url || ""
+    };
     return acc;
   }, {});
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16 bg-[#0f0f0f] min-h-screen text-white">
-      <h1 className="text-4xl font-bold mb-12">Admin Dashboard</h1>
+    <div className="max-w-7xl mx-auto px-6 py-16 bg-[#FFFFF0] min-h-screen text-[#333333]">
+      <h1 className="text-4xl font-bold mb-12 font-serif text-[#333333]">Admin Dashboard</h1>
       
-      {/* Estadísticas */}
+      {/* Estadísticas - Estilo MarfilYFresa */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-[#1a1a1a] p-8 rounded-3xl border border-gray-800 shadow-sm">
-          <h3 className="text-gray-400">Total Orders</h3>
-          <p className="text-4xl font-bold">{ordersCount || 0}</p>
+        <div className="bg-white/70 p-8 rounded-3xl border border-[#FADADD] shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Orders</h3>
+          <p className="text-4xl font-bold mt-2">{ordersCount || 0}</p>
         </div>
-        <div className="bg-[#1a1a1a] p-8 rounded-3xl border border-gray-800 shadow-sm">
-          <h3 className="text-gray-400">Total Revenue</h3>
-          <p className="text-4xl font-bold">${totalRevenue.toFixed(2)}</p>
+        <div className="bg-white/70 p-8 rounded-3xl border border-[#FADADD] shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Total Revenue</h3>
+          <p className="text-4xl font-bold mt-2">${totalRevenue.toFixed(2)}</p>
         </div>
-        <div className="bg-[#1a1a1a] p-8 rounded-3xl border border-gray-800 shadow-sm">
-          <h3 className="text-gray-400">Active Users</h3>
-          <p className="text-4xl font-bold">{usersCount || 0}</p>
+        <div className="bg-white/70 p-8 rounded-3xl border border-[#FADADD] shadow-sm">
+          <h3 className="text-sm font-medium text-gray-500 uppercase tracking-wider">Active Users</h3>
+          <p className="text-4xl font-bold mt-2">{usersCount || 0}</p>
         </div>
       </div>
 
@@ -62,27 +66,33 @@ export default async function AdminPage() {
         {/* Columna izquierda: Tabla y Formulario */}
         <div className="lg:col-span-2 space-y-12">
           <div>
-            <h2 className="text-2xl font-bold mb-6">Inventory Management</h2>
+            <h2 className="text-2xl font-bold mb-6 font-serif">Inventory Management</h2>
             <ProductTable products={products || []} />
           </div>
           <div>
-            <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
+            <h2 className="text-2xl font-bold mb-6 font-serif">Add New Product</h2>
             <ProductForm />
           </div>
         </div>
 
         {/* Columna derecha: Wishlist Stats */}
-        <div className="bg-[#1a1a1a] p-8 rounded-3xl border border-gray-800 shadow-sm">
-          <h2 className="text-2xl font-bold mb-6">Wishlist Stats</h2>
+        <div className="bg-white/70 p-8 rounded-3xl border border-[#FADADD] shadow-sm h-fit">
+          <h2 className="text-2xl font-bold mb-6 font-serif">Wishlist Stats</h2>
           <div className="space-y-4">
             {!stats || Object.keys(stats).length === 0 ? (
-              <p className="text-gray-500">No items in wishlists yet.</p>
+              <p className="text-gray-500 italic">No items in wishlists yet.</p>
             ) : (
-              Object.entries(stats).map(([name, count]: any) => (
-                <div key={name} className="flex justify-between items-center p-3 bg-white/5 rounded-lg border border-gray-800">
-                  <span className="font-medium text-sm">{name}</span>
-                  <span className="bg-mf-primary text-black px-3 py-1 rounded-full text-xs font-bold">
-                    {count} {count === 1 ? 'user' : 'users'}
+              Object.entries(stats).map(([name, data]: any) => (
+                <div key={name} className="flex items-center justify-between p-4 bg-white/50 rounded-2xl border border-[#E6E6FA]">
+                  <div className="flex items-center gap-3">
+                    <img src={data.image} alt={name} className="w-12 h-12 rounded-lg object-cover border border-[#FADADD]" />
+                    <div>
+                      <p className="font-semibold text-sm">{name}</p>
+                      <p className="text-xs text-gray-500">${data.price.toFixed(2)}</p>
+                    </div>
+                  </div>
+                  <span className="bg-[#FADADD] text-black px-3 py-1 rounded-full text-xs font-bold">
+                    {data.count} {data.count === 1 ? 'user' : 'users'}
                   </span>
                 </div>
               ))
