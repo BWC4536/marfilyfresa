@@ -66,13 +66,15 @@ export default async function RootLayout({
                   Login
                 </Link>
               )}
+              <div className="flex items-center gap-2">
+              <a href="https://wa.me/34605153154" target="_blank" className="bg-[#25D366] p-2 rounded-full text-white hover:scale-110 transition-transform">
+                <FaWhatsapp size={20} />
+              </a>
+              <a href="https://www.instagram.com/marfilyfresa/" target="_blank" className="bg-[#E1306C] p-2 rounded-full text-white hover:scale-110 transition-transform">
+                <FaInstagram size={20} />
+              </a>
+            </div>
             </nav>
-            <a href="https://wa.me/34605153154" target="_blank" className="bg-[#25D366] p-4 rounded-full text-white shadow-lg hover:scale-110 transition-transform">
-              <FaWhatsapp size={24} />
-            </a>
-            <a href="https://www.instagram.com/marfilyfresa/" target="_blank" className="bg-[#E1306C] p-4 rounded-full text-white shadow-lg hover:scale-110 transition-transform">
-              <FaInstagram size={24} />
-            </a>
           </div>
         </header>
 
